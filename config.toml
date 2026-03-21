@@ -1,0 +1,66 @@
+# 配置版本，后续做配置迁移会用到
+version = 1
+
+# MCP HTTP 服务监听配置
+[server]
+# 监听地址，建议本机使用 127.0.0.1
+host = "127.0.0.1"
+# 监听端口
+port = 2580
+# MCP 路由路径
+path = "/mcp"
+
+# 鉴权配置
+[auth]
+# 是否启用 Bearer Token 鉴权
+enabled = false
+
+# 文件系统策略
+[filesystem]
+# 是否允许跟随符号链接（false 更安全）
+followSymlinks = false
+
+# 黑名单路径策略（前缀 + glob）
+  [filesystem.blacklist]
+  # 命中这些路径前缀将直接拒绝
+  prefixes = [ "/proc", "/sys", "/dev" ]
+  # 可选 glob 黑名单规则
+  globs = [ ]
+
+# 资源限制（防止进程被拖死）
+[limits]
+# 前台命令默认超时（毫秒）
+commandTimeoutMs = 60_000
+# 前台命令最大并发
+commandConcurrency = 4
+# 前台命令 stdout+stderr 最大保留字节数
+commandOutputMaxBytes = 1_048_576
+# 后台任务历史最多保留条数
+backgroundHistoryLimit = 200
+# 后台任务日志单文件最大保留字节数
+backgroundOutputMaxBytes = 1_048_576
+# HTTP 请求不可关闭硬超时（毫秒）
+httpHardTimeoutMs = 120_000
+# HTTP 响应不可关闭硬截断（字节）
+httpHardMaxBytes = 10_485_760
+
+# 审计日志配置
+[logging]
+# 审计日志文件路径
+auditFile = "./data/audit.log"
+# 默认脱敏字段关键字（不区分大小写）
+redactFields = [
+  "authorization",
+  "cookie",
+  "token",
+  "password",
+  "secret",
+  "api_key"
+]
+
+# 后台任务存储配置
+[jobs]
+# 后台任务状态历史文件
+historyFile = "./data/jobs.json"
+# 后台任务 stdout/stderr 落盘目录
+outputDir = "./data/jobs"
